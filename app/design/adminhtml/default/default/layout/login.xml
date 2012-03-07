@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <login_index_index>
+        <reference name="content">
+            <block type="login/login" name="login" template="login/login.phtml" />
+        </reference>
+    </login_index_index>
+</layout>

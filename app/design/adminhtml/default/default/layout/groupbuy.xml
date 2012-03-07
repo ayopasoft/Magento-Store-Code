@@ -1,0 +1,16 @@
+
+   <?xml version="1.0"?>
+
+   <layout version="0.1.0">
+
+       <groupbuy_adminhtml_groupbuy_index>
+
+           <reference name="content">
+
+               <block type="groupbuy/adminhtml_groupbuy" name="groupbuy" />
+
+           </reference>
+
+       </groupbuy_adminhtml_groupbuy_index>
+
+   </layout>

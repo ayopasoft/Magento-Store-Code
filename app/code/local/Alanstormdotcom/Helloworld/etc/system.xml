@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+		<helloconfig translate="label" module="helloworld">
+			<label>Hello Config</label>
+			<sort_order>99999</sort_order>
+		</helloconfig>
+	</tabs>	
+	<sections>
+        <general>
+            <groups>
+                <example>
+                    <label>Example of Adding a Group</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>                    
+                </example>
+            </groups>
+        </general>	
+		<helloworld_options translate="label" module="helloworld">
+			<label>Hello World Config Options</label>
+			<tab>helloconfig</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>1000</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+			<messages translate="label">
+				<label>Demo Of Config Fields</label>
+				<frontend_type>text</frontend_type>
+				<sort_order>1</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>                
+	<fields>
+<hello_message>
+    <label>Message</label>
+    <frontend_type>select</frontend_type>
+    <!-- adding a source model -->
+    <source_model>helloworld/words</source_model>                           
+    <sort_order>1</sort_order>
+    <show_in_default>1</show_in_default>
+    <show_in_website>1</show_in_website>
+    <show_in_store>1</show_in_store>                    
+</hello_message>		<hello_time>
+			<label>Time to Say Hello</label>
+			<frontend_type>time</frontend_type>
+			<sort_order>1</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>    				
+		</hello_time>		
+	</fields>                 
+			</messages>
+			</groups>
+		</helloworld_options>
+	</sections>		
+</config>

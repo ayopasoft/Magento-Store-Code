@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <ActiveCodeline_SampleModule1>
+            <version>0.1.0</version>
+        </ActiveCodeline_SampleModule1>
+    </modules>
+        
+        
+<global>
+        <helpers>
+            <SampleModule1>
+                <class>ActiveCodeline_SampleModule1_Helper</class>
+            </SampleModule1>  
+        </helpers>
+</global>        
+    
+    
+        <admin>
+        <routers>
+            <samplemodule1>
+                <use>admin</use>
+                <args>
+                    <module>ActiveCodeline_SampleModule1</module>
+                    <frontName>samplemodule1</frontName>
+                </args>
+            </samplemodule1>
+        </routers>
+    </admin>
+    
+ 
+    
+    
+    <adminhtml>
+        <menu>
+            <menu1 translate="title" module="SampleModule1">
+                <title>ActiveCodeline SampleModule1</title>
+                <sort_order>60</sort_order>
+                <children>
+                    <menuitem1 module="SampleModule1">
+                        <title>Menu item 1</title>
+                        <action>samplemodule1/example</action>
+                    </menuitem1>
+                </children>                
+            </menu1>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <menu1 translate="title" module="SampleModule1">
+							<title>ActiveCodeline SampleModule1</title>
+                			<sort_order>60</sort_order>
+                            <children>
+                                <menuitem1>
+                                    <title>Menu item 1</title>
+                                </menuitem1>
+                            </children>
+                       </menu1>
+                   </children>
+               </admin>
+           </resources>
+        </acl>
+    </adminhtml>    
+    
+</config>

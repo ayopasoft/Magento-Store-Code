@@ -1,0 +1,93 @@
+<?php
+//
+?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="https://ayopa-resources.s3.amazonaws.com/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.js"></script>
+<script src="https://ayopa-resources.s3.amazonaws.com/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="https://ayopa-resources.s3.amazonaws.com/js/jquery.alert.js"></script>
+<link href="https://ayopa-resources.s3.amazonaws.com/js/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css" type="text/css" rel="stylesheet">
+<link href="https://ayopa-resources.s3.amazonaws.com/css/jquery.alert.css" type="text/css" rel="stylesheet">
+
+
+
+		<script>
+		 $j = jQuery.noConflict();
+		
+		 jQuery(document).ready(function(){
+		
+		  jQuery("#hiddenLink").fancybox({
+				'width' : '500px',
+				'height' : '750px',
+				'autoScale' : false,
+				'transitionIn' : 'none',
+				'transitionOut' : 'none',
+				'type' : 'iframe',
+				'padding' : '0',
+				'overlayColor' : '#000000',
+				hideOnOverlayClick: false,
+				hideOnContentClick: false,
+				'scrolling' : 'no'
+			});
+			
+           //jQuery("#hiddenLink").fancybox().trigger('click');
+
+			
+		});
+		
+		  function ayopaSubmit(formID){
+		
+		   //alert("Button clicked");
+	       var url = "http://beta.ayopasoft.com/AyopaServer/get-user-by-fb-id";
+	      
+
+		    jQuery.getJSON(url + "?jsoncallback=?", function(data){
+		    User = data.User;
+
+		    if(User != "")
+		    {
+			    //alert (User);
+		     	document.getElementById('fb_id').value = User;
+				//document.getElementById('auction_id').value = '&mvt:option:data';
+				jQuery('#'+formID).submit();
+		    }
+		    else
+		    {
+		     	if (document.getElementById('fb_id').value == "")
+				{
+
+				jConfirm('Click OK to register/login to Ayopa. If you click Cancel, you will not be entered into the group buy.', 'You are not logged into ayopa', function(r) {
+					if (r == true)
+					{
+							var newwindow;
+							var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,                  
+							screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,                  
+							outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,                  
+							outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22), 
+							width    = 885,                  
+							height   = 575,                  
+							left     = parseInt(screenX + ((outerWidth - width) / 2), 10),                  
+							top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),                  
+							features = ( 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top );               
+							newwindow=window.open('http://beta.ayopasoft.com/AyopaServer/get-permissions','Register through Facebook',features);
+					}
+					else
+					{
+						jQuery('#'+formID).submit();
+					}
+				});
+            	}
+		   }
+
+		 })
+
+		   return;
+
+		}
+		 
+		</script>
+
+		<a href="http://beta.ayopasoft.com/AyopaServer/facebook-registration" class="iframe" id="hiddenLink"></a>	
+
+    
+<input type="hidden" id="fb_id" name="fb_id" value="">
+<input type="hidden" id="auction_id" name="auction_id" value="">

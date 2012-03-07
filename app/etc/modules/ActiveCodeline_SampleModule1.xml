@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <ActiveCodeline_SampleModule1>
+            <active>false</active>
+            <codePool>local</codePool>
+        </ActiveCodeline_SampleModule1>
+    </modules>
+</config>

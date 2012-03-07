@@ -1,0 +1,497 @@
+<?php
+
+$product_id  = (int) $this->getRequest()->getParam('id');
+
+$_product = Mage::getModel('catalog/product')->load($product_id);
+
+/**
+ * Sample template for custom tab content by FishPig
+ *
+ * Feel free to change this template to what ever you like
+ *
+ */
+?>
+<form name="PROD">
+<div class="entry-edit">
+  <div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend">Ayopa Group Buy</h4>
+  </div>
+  <div id="group_fields4" class="fieldset fieldset-wide">
+    <div class="hor-scroll">
+
+      <table cellspacing="0" class="form-list">
+        <tbody>
+          <tr>
+            <td>
+              	<style>
+					#field { margin-left: .5em; float: left; }
+				  	#field, label { float: left; font-family: Arial, Helvetica, sans-serif; font-size: small; }
+					br { clear: both; }
+					input { border: 1px solid black; margin-bottom: .5em;  }
+					input.error { border: 1px solid red; }
+					label.error {
+						padding-left: 16px;
+						margin-left: .3em;
+					}
+					label.valid {
+						display: block;
+						width: 16px;
+						height: 16px;
+					}
+				</style>
+
+				<script src="http://ayopa-resources.s3.amazonaws.com/js/jquery-1.4.4.min.js"></script>
+				<link href="https://ayopa-resources.s3.amazonaws.com/css/ui-lightness/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css">
+				<script type="text/javascript" src="https://ayopa-resources.s3.amazonaws.com/js/jquery-ui-1.7.2.custom.min.js"></script> 
+				<script language="javascript" src="https://ayopa-resources.s3.amazonaws.com/js/jquery.json.js"></script>
+				<script language="javascript" src="https://ayopa-resources.s3.amazonaws.com/js/jquery.json-2.2.min.js"></script>
+				<script type="text/javascript" src="https://ayopa-resources.s3.amazonaws.com/js/timepicker.js"></script>
+				<script type="text/javascript" src="https://ayopa-resources.s3.amazonaws.com/js/json2.js"></script>
+				<script type="text/javascript" src="https://ayopa-resources.s3.amazonaws.com/js/jquery.crypt.js"></script>
+				<script type="text/javascript" src="https://ayopa-resources.s3.amazonaws.com/js/jquery.validate.min.js"></script>
+				<script>
+					
+				var $j = jQuery.noConflict();	
+					
+				var active_json = "";
+				var merchant_id = "";
+				var merchant_name = "";
+				var merchant_website = "";
+
+				function remFormField(){
+					jQuery('#table_sched tr:last').remove();	
+				}
+
+				function addFormField(dis,min,max,add) {
+
+					dis = typeof(dis) != 'undefined' ? dis : '';
+					min = typeof(min) != 'undefined' ? min : '';
+					max = typeof(max) != 'undefined' ? max : '';
+					add = typeof(add) != 'undefined' ? add : '0';
+
+
+					var id = document.getElementById("sched_id").value;
+
+
+					var $table = jQuery('#table_sched');
+			    	// Number of td's in the last table row
+					var n = jQuery('tr:last td', $table).length;
+					var tds = "<tr>";
+					tds += "<td>$</td><td><input type='text' size='7' name='schedule[]' id='schedule_dis" + id + "' value='" + dis + "' title='Item discount given at this point in the schedule' class='required number'></td>";        
+					tds += "<td><input type='text' size='7' name='schedule[]' id='schedule_min" + id + "' value='" + min + "' title='Minimum quantity sold to reach this price point' class='required digits'></td>";    
+					tds += "<td><input type='text' size='7' name='schedule[]' id='schedule_max" + id + "' value='" + max + "' title='Maximum quantity sold allowed in this price point' class='required digits'></td>"; 
+					tds += "<td><input type='text' size='7' name='schedule[]' id='schedule_add" + id + "' value='" + add + "' title='Number of items beyond the minimum that triggers an additional discount' class='required digits'></td>";
+					tds += "</tr>";
+				        if(jQuery('tbody', $table).length > 0){
+				            jQuery('tbody', $table ).append(tds);
+				        }else {
+							$table.append(tds);
+						}
+					id = (id - 1) + 2;				
+					document.getElementById("sched_id").value = id;
+
+				}
+				
+				function active_auction(merchant_id) {
+					var url = "http://beta.ayopasoft.com/AyopaServer/get-auction-for-product?merchantID=" + merchant_id + "&productID=<?php echo $_product->getId(); ?>";
+					  jQuery.getJSON(url + "&jsoncallback=?", function(data){
+						active_json = data;
+					
+						 if (typeof(active_json.auction) != 'undefined' && active_json != 0 && active_json != null)
+						 {
+
+					  		jQuery('#auction_id').val(active_json.auction.auction_id);
+							jQuery('#product_name').val(active_json.auction.product_name);
+							jQuery('#product_name').attr('disabled', 'disabled');
+							jQuery('#product_descr').val(active_json.auction.product_descr);
+							jQuery('#product_descr').attr('disabled', 'disabled');
+							jQuery('#auction_start').val(active_json.auction.auction_start);
+							jQuery('#auction_start').attr('disabled', 'disabled');
+							jQuery('#auction_end').val(active_json.auction.auction_end);
+							jQuery('#auction_end').attr('disabled', 'disabled');
+							jQuery('#auction_maxunits').val(active_json.auction.auction_maxunits);
+							jQuery('#auction_maxunits').attr('disabled', 'disabled');
+							jQuery('#auction_startprice').val(active_json.auction.auction_startprice);
+							jQuery('#auction_startprice').attr('disabled', 'disabled');
+							jQuery('#auction_image').val(active_json.auction.auction_image);
+					        jQuery('#auction_priceconflict').val(active_json.auction.pricing_conflict);
+							jQuery('#auction_priceconflict').attr('disabled', 'disabled');
+							jQuery('#AYM_category').val(active_json.auction.product_category);
+
+							if (active_json.auction.auction_highlighted)
+							{
+							  jQuery('#auction_highlighted').attr('checked','checked');
+							}
+
+							var arLen=active_json.auction.auction_schedule.schedule_row.length;
+
+							for (var i=0; i < arLen; ++i) 
+							{
+							  addFormField(active_json.auction.auction_schedule.schedule_row[i].dis,
+									active_json.auction.auction_schedule.schedule_row[i].min,
+									active_json.auction.auction_schedule.schedule_row[i].max,
+									active_json.auction.auction_schedule.schedule_row[i].add);
+
+							  jQuery('#schedule_min' + (i + 1)).attr('disabled','disabled');
+							  jQuery('#schedule_max' + (i + 1)).attr('disabled','disabled');
+							  jQuery('#schedule_dis' + (i + 1)).attr('disabled', 'disabled');
+							  jQuery('#schedule_add' + (i + 1)).attr('disabled', 'disabled');
+							}
+
+
+							jQuery('#add_btn').hide();
+							jQuery('#rem_btn').hide();
+							jQuery('#hidefields').show();
+							jQuery('#create_auction').hide();
+						}
+						else
+						{
+							jQuery('#hidefields').hide();
+
+							//blank out auction id
+							jQuery('#auction_id').val("");
+
+						}
+						
+				      });
+				}
+
+
+				 jQuery(document).ready(function(){
+
+					jQuery("form[name^='PROD']").each(function(){
+					      jQuery(this).validate();
+					});
+					
+					
+					
+					var url = "http://beta.ayopasoft.com/AyopaServer/check-login?username=<?php echo Mage::getStoreConfig('ayopa/ayopamodule/login'); ?>&password=<?php echo sha1 (Mage::helper('core')->decrypt(Mage::getStoreConfig('ayopa/ayopamodule/password'))); ?>";
+
+					    jQuery.getJSON(url + "&jsoncallback=?", function(data){
+							error = data.error
+							if(error == "" || error == null)
+						    {
+						      merchant_id = data.merchant_id;
+							  merchant_name = data.merchant_name;
+							  merchant_website = data.merchant_website;
+							  active_json = active_auction(merchant_id);
+							
+							}
+							else
+							{
+								alert (data.error);
+							}
+						
+						});
+
+					var url = "http://beta.ayopasoft.com/AyopaServer/get-categories?";
+
+					    jQuery.getJSON(url + "jsoncallback=?", function(data){
+							
+							var catOptions = "";
+							
+							for(var i=0;i<data.length;i++){
+							        var obj = data[i];
+										catOptions += '<option value="'+ obj["category_name"] + '">'+ obj["category_name"] + '</option>';
+							 
+							    }
+							
+							jQuery("#AYM_category").html(catOptions);
+							
+						});
+						
+					
+					
+				
+				  jQuery(function() {  
+				     jQuery('#auction_start').datepicker({  
+				         duration:'',  
+				         showTime: true,  
+				         constrainInput: false,  
+				         stepMinutes: 1,  
+				         stepHours: 1,  
+				         altTimeField:'',  
+				         time24h: false,
+				   		 dateFormat: 'yy-mm-dd',
+						 timeFormat: 'hh:mmp'
+				      });  
+				 });
+
+				jQuery(function() {  
+				     jQuery('#auction_end').datepicker({  
+				         duration:'',  
+				         showTime: true,  
+				         constrainInput: false,  
+				         stepMinutes: 1,  
+				         stepHours: 1,  
+				         altTimeField:'',  
+				         time24h: false,
+				         dateFormat: 'yy-mm-dd',
+				         timeFormat: 'hh:mmp'
+				      });  
+				 });
+
+
+				jQuery("#btn_new_auction").click(function(){
+					jQuery('#hidefields').show();
+					jQuery('#create_auction').hide();
+				});
+
+				jQuery("#btn_end_auction").click(function(){
+					var answer = confirm("Are you sure you want to end this auction?")
+				    if (answer){
+				        var url = "http://beta.ayopasoft.com/AyopaServer/end-auction?auctionID=" + jQuery('#auction_id').val();
+
+						    jQuery.getJSON(url + "&jsoncallback=?", function(data){
+						    Name = data.Name;
+						    Descr = data.Descr;
+							Auction = data.auction_id;
+
+						    if(Auction != "")
+						    {
+						     jQuery("#auction_id").val(Auction);
+						     $j("#product_edit_form").submit();
+						    }
+						    else
+						    {
+						     jQuery("#auction_id").html("No Auction ID returned!!!");
+						    }
+
+						   })
+				    }
+				});
+				
+				
+				function replacer(key, value) {
+				    if (typeof value === 'number' && !isFinite(value)) {
+				        return String(value);
+				    }
+				    return value;
+				}
+				
+				
+				  jQuery("#btn").click(function(){
+
+				   jQuery("form[name^='PROD']").valid();
+
+				    var counter = 0;    
+				    var schedule = new Array();
+
+					jQuery("input[id*='schedule_dis']").each(function(){
+					   if (jQuery('schedule_dis' + counter).val() != ''){
+							var disVal = jQuery('#schedule_dis' + (counter + 1)).val();
+							var minVal = jQuery('#schedule_min' + (counter + 1)).val();
+							var maxVal = jQuery('#schedule_max' + (counter + 1)).val();
+							var addVal = jQuery('#schedule_add' + (counter + 1)).val();
+							
+							var scheduleObj = {dis:disVal, min:minVal, max:maxVal, add:addVal};
+							schedule[counter] = scheduleObj;
+							
+
+						}
+						counter += 1;
+					});
+
+
+				    var highlighted = "false";
+				   	if (jQuery('#auction_highlighted').is(":checked"))
+					{
+					  highlighted = "true";
+					}
+
+					var obj = {auction:{
+						auction_id: jQuery('#auction_id').val(), 
+						product_name: jQuery('#product_name').val(),  
+						product_id: jQuery('#product_id').val(),
+						product_category: jQuery('#AYM_category').val(),
+						product_descr: jQuery('#product_descr').val(),
+						product_image: jQuery('#product_image').val(),
+						product_link: "<?php echo $_product->getProductUrl(); ?>",
+						merchant_id: merchant_id,
+						pricing_conflict: jQuery('#auction_priceconflict').val(),
+						auction_ended:"",
+						merchant_website: merchant_website,
+						auction_highlighted: highlighted,
+						merchant_name: merchant_name,
+						auction_maxunits: jQuery('#auction_maxunits').val(),
+						auction_end: jQuery('#auction_end').val(),
+						auction_deleted:"",
+						auction_startprice: jQuery('#auction_startprice').val(),
+						auction_start: jQuery('#auction_start').val(),
+						rebate_sent: "0",
+						auction_cleared: "0",
+						auction_schedule:{schedule_row: schedule }
+					}};
+
+					
+				  // var auctionDef = $j.JSON.encode(obj);
+				 // var	auctionDef = jQuery.toJSON(obj);
+				var auctionDef = Object.toJSON(obj);
+				
+				    auctionDef = encodeURIComponent(auctionDef);
+					//alert (auctionDef);
+
+				   var url = "http://beta.ayopasoft.com/AyopaServer/create-auction?auctionDef=" + auctionDef;
+
+				    jQuery.getJSON(url + "&jsoncallback=?", function(data){
+
+					Auction = data.auction_id;
+
+				    if(Auction != "" && Auction != null)
+				    {
+				     jQuery("#auction_id").val(Auction);
+				     //SubmitForm( 'PROD', 'UPRD' );
+						$j("#product_edit_form").submit();
+				    }
+				    else
+				    {
+
+					 	alert (data.error);
+				    }
+
+				   })
+
+				   return false;
+
+				  });
+				 });
+				</script>
+
+			    <div id="hidefields" style="display:none">
+
+				<div style="float:right; width:250px;margin-right:100px">
+				  <table width="100%" align="right">
+					<tr><td nowrap>
+						Auction Max Units:
+						</td>
+						<td width="100%">
+						<input type="text" size=10 name="AYM_Data[7]"   id = "auction_maxunits" value="" class="required digits">	</td>
+					</tr>
+
+					<tr><td nowrap>
+						Auction Start Price:
+						</td>
+						<td width="100%">
+						<input type="text" size=10 name="AYM_Data[8]"   id = "auction_startprice" value="" class="required number">	</td>
+					</tr>
+
+					<tr><td nowrap>
+						Auction Price Conflict:
+						</td>
+						<td width="100%">
+						<input type="text" size=10 name="AYM_Data[9]"   id = "auction_priceconflict" value="" class="required number">	</td>
+					</tr>
+					</table>
+					<br /><br />
+					<p>&nbsp;</p>
+					<input type="hidden" id="sched_id" value="1">
+					<b>Auction Schedule</b> <a href="#" id="add_btn" onClick="addFormField(); return false;">[+] Add</a> <a href="#" id="rem_btn" onClick="remFormField(); return false;">[-] Remove</a>
+					<table border=0 cellpadding=0 cellspacing=5 width="100%" id="table_sched">
+					<thead>
+					<tr>
+					    <th></th>
+						<th>Discount</th>
+						<th>Min Qty</th>
+						<th>Max Qty</th>
+						<th>Add'l Disc</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+					</table>
+				</div>
+
+				<table border=0 cellpadding=0 cellspacing=5 width="50%">
+					<tr><td width="100%">
+						<input type="hidden" size=25 name="AYM_Data[0]"   id = "auction_id" value="">
+					</td></tr>
+
+				<tr><td nowrap>
+					Product ID:
+					</td>
+					<td width="100%">
+						<input type="hidden" size="27" name="AYM_Data[1]" id="product_id" value="<?php echo $_product->getId(); ?>"><?php echo $_product->getId(); ?>
+					</td>
+				</tr>
+
+				<tr><td nowrap>
+					Product Name:
+					</td>
+					<td width="100%">
+						<input type="text" size="27" name="AYM_Data[2]" id="product_name" class="required" value="<?php echo $_product->getName(); ?>">
+					</td>
+				</tr>
+
+				<tr><td nowrap>
+					Product Description:
+					</td>
+					<td width="100%">
+						<textarea rows="10" cols="28" name="AYM_Data[3]"  id = "product_descr" class="required"><?php echo $_product->getShortDescription(); ?></textarea>
+					</td>
+				</tr>
+
+				
+				<tr>
+				<td nowrap>
+					Ayopa Category:
+				</td>
+				<td width="100%">
+						
+					<select name="AYM_category" id="AYM_category">
+					
+						
+					</select>
+				</td></tr>
+
+				<tr><td nowrap>
+					Auction Start:
+					</td>
+					<td width="100%">
+					<input type="text" size=27 name="AYM_Data[4]"   id = "auction_start" value="" class="required">	</td>
+				</tr>
+
+				<tr><td nowrap>
+					Auction End:
+					</td>
+					<td width="100%">
+						<input type="text" size=27 name="AYM_Data[5]"   id = "auction_end" value="" class="required">
+					</td>
+				</tr>
+				<tr><td nowrap>
+					Highlighted:
+					</td>
+					<td width="100%">
+					<input type="checkbox" name="AYM_Data[10]"   id = "auction_highlighted" value="true"> 	</td>
+				</tr>
+				<tr><td nowrap>
+					Product Image:
+					</td>
+					<td width="100%">
+						<!--TODO: Image not showing up -->
+						<input type="hidden" size=25 name="AYM_Data[6]"   id = "product_image" value="<?php echo $_product->getMediaConfig()->getMediaUrl($_product->getData('image'));   ?>"><img src="<?php echo $_product->getMediaConfig()->getMediaUrl($_product->getData('image'));  ?>" width="100px">
+					</td>
+				</tr>
+				</table>
+
+						<div style="float:right;margin-right:30px;">
+							<input name="auction_submit" type="button" id="btn" name="btn" value="Save Auction">
+						</div>
+						<div style="float:right;margin-right:30px;">
+							<input name="auction_end" type="button" id="btn_end_auction" name="btn_end_auction" value="End Auction">
+						</div>
+						<div id="response">
+						</div>	
+
+				</div> <!--end hide fields-->
+				<div id="create_auction">
+						<input name="auction_new" type="button" id="btn_new_auction" value="New Auction">
+				</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </form>
+    </div>
+  </div>
+</div>

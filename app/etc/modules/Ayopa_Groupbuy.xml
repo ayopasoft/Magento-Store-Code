@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+   <config>
+       <modules>
+           <Ayopa_Groupbuy>
+               <active>true</active>
+               <codePool>local</codePool>
+           </Ayopa_Groupbuy>
+       </modules>
+   </config>

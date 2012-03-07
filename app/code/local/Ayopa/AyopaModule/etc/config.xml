@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Ayopa_AyopaModule>
+            <version>0.1.0</version>
+        </Ayopa_AyopaModule>
+    </modules>
+        
+        
+<global>
+		<blocks>
+	      <ayopamodule>
+	        <class>Ayopa_AyopaModule_Block</class>
+	      </ayopamodule>
+	    </blocks>
+        <helpers>
+            <ayopamodule>
+                <class>Ayopa_AyopaModule_Helper</class>
+            </ayopamodule>  
+        </helpers>
+		<events>
+			<checkout_controller_onepage_save_shipping_method>
+			        <observers>
+			          <ayopamodule_save_order>
+			            
+			            <class>Ayopa_AyopaModule_Model_Observer</class>
+			            <method>setFacebookId</method>
+			          </ayopamodule_save_order>
+			        </observers>
+			 </checkout_controller_onepage_save_shipping_method>
+		    <sales_order_place_before>
+		       	<observers>
+		           <ayopamodule_order_place_before>
+		               <class>Ayopa_AyopaModule_Model_Observer</class>
+		               <method>onSalesOrderPlaceBefore</method>
+		            </ayopamodule_order_place_before>
+		        </observers>
+		    </sales_order_place_before>
+			<sales_order_place_after>
+		       	<observers>
+		           <ayopamodule_order_place_after>
+						<class>Ayopa_AyopaModule_Model_Observer</class>
+		               <method>onSalesOrderPlaceAfter</method>
+		            </ayopamodule_order_place_after>
+		        </observers>
+		    </sales_order_place_after>
+			
+			<checkout_cart_product_add_after>
+			     <observers>
+			        <ayopamodule_add_to_cart_after>
+			           <class>Ayopa_AyopaModule_Model_Observer</class>
+			           <method>onAddToCartAfter</method>
+			         </ayopamodule_add_to_cart_after>
+			     </observers>
+		   </checkout_cart_product_add_after>
+	    </events>
+		<models>
+			<ayopamodule>
+				<class>Ayopa_AyopaModule_Model</class>
+				<resourceModel>ayopamodule_mysql4</resourceModel>
+			</ayopamodule>
+			<ayopamodule_mysql4>
+				<class>Ayopa_AyopaModule_Model_Mysql4</class>
+				<entities>
+					<ayopamodule>
+						<table>ayopa_module</table>
+					</ayopamodule>
+				</entities>
+			</ayopamodule_mysql4>
+		</models>
+		<resources>
+			<ayopamodule_setup>
+				<setup>
+					<module>Ayopa_AyopaModule</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</ayopamodule_setup>
+			<ayopamodule_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</ayopamodule_write>
+			<ayopamodule_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</ayopamodule_read>
+		</resources>
+</global>        
+    
+    
+        <admin>
+        <routers>
+            <ayopamodule>
+                <use>admin</use>
+                <args>
+                    <module>Ayopa_AyopaModule</module>
+                    <frontName>ayopamodule</frontName>
+                </args>
+            </ayopamodule>
+        </routers>
+    </admin>
+
+	<adminhtml>
+	    <events>
+	      <core_block_abstract_prepare_layout_after>
+	        <observers>
+	          <ayopa_product_injectTabs>
+	            <type>singleton</type>
+	            <class>ayopamodule/observer_product</class>
+	            <method>injectTabs</method>
+	          </ayopa_product_injectTabs>
+	        </observers>
+	      </core_block_abstract_prepare_layout_after>
+	      <catalog_product_save_after>
+	        <observers>
+	          <ayopa_save_product_data>
+	            <type>singleton</type>
+	            <class>ayopamodule/observer_product</class>
+	            <method>saveTabData</method>
+	          </ayopa_save_product_data>
+	        </observers>
+	      </catalog_product_save_after>
+	    </events>
+	  </adminhtml>
+	
+	<frontend>
+	  <layout>
+	    <updates>
+	      <ayopamodule>
+	        <file>groupbuy.xml</file>
+	      </ayopamodule>
+	    </updates>
+	  </layout>
+	</frontend>
+    
+</config>

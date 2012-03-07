@@ -1,0 +1,244 @@
+  
+     <?xml version="1.0"?>
+  
+     <config>
+  
+         <modules>
+  
+             <Ayopa_Groupbuy>
+  
+                 <version>0.1.0</version>
+  
+             </Ayopa_Groupbuy>
+  
+         </modules>
+  
+         <frontend>
+  
+             <routers>
+ 
+                 <groupbuy>
+ 
+                     <use>standard</use>
+ 
+                     <args>
+ 
+                         <module>Ayopa_Groupbuy</module>
+ 
+                         <frontName>groupbuy</frontName>
+ 
+                     </args>
+ 
+                 </groupbuy>
+ 
+             </routers>
+ 
+             <layout>
+ 
+                 <updates>
+ 
+                     <groupbuy>
+ 
+                         <file>groupbuy.xml</file>
+ 
+                     </groupbuy>
+ 
+                 </updates>
+ 
+             </layout>
+ 
+         </frontend>
+ 
+         <admin>
+ 
+             <routers>
+ 
+                 <groupbuy>
+ 
+                     <use>admin</use>
+ 
+                     <args>
+ 
+                         <module>Ayopa_Groupbuy</module>
+ 
+                         <frontName>groupbuy</frontName>
+ 
+                     </args>
+ 
+                 </groupbuy>
+ 
+             </routers>
+ 
+         </admin>
+ 
+         <adminhtml>
+ 
+             <menu>
+ 
+                 <groupbuy module="groupbuy">
+ 
+                     <title>Groupbuy</title>
+ 
+                     <sort_order>71</sort_order>               
+ 
+                     <children>
+ 
+                         <items module="groupbuy">
+ 
+                             <title>Manage Items</title>
+ 
+                             <sort_order>0</sort_order>
+ 
+                             <action>groupbuy/adminhtml_groupbuy</action>
+ 
+                         </items>
+ 
+                     </children>
+ 
+                 </groupbuy>
+ 
+             </menu>
+ 
+             <acl>
+ 
+                 <resources>
+ 
+                     <all>
+ 
+                         <title>Allow Everything</title>
+ 
+                     </all>
+ 
+                     <admin>
+ 
+                         <children>
+ 
+                             <groupbuy>
+ 
+                                 <title>Groupbuy Module</title>
+ 
+                                 <sort_order>200</sort_order>
+ 
+                             </groupbuy>
+ 
+                         </children>
+ 
+                     </admin>
+ 
+                 </resources>   
+ 
+             </acl>
+ 
+             <layout>
+ 
+                 <updates>
+ 
+                     <groupbuy>
+ 
+                         <file>groupbuy.xml</file>
+ 
+                     </groupbuy>
+ 
+                 </updates>
+ 
+             </layout>
+ 
+         </adminhtml>   
+ 
+         <global>
+ 
+             <models>
+ 
+                 <groupbuy>
+ 
+                     <class>Ayopa_Groupbuy_Model</class>
+ 
+                     <resourceModel>groupbuy_mysql4</resourceModel>
+ 
+                 </groupbuy>
+ 
+                 <groupbuy_mysql4>
+ 
+                     <class>Ayopa_Groupbuy_Model_Mysql4</class>
+ 
+                     <entities>
+ 
+                         <groupbuy>
+ 
+                             <table>groupbuy</table>
+ 
+                         </groupbuy>
+ 
+                     </entities>
+ 
+                 </groupbuy_mysql4>
+ 
+             </models>
+ 
+             <resources>
+ 
+                 <groupbuy_setup>
+ 
+                     <setup>
+ 
+                         <module>Ayopa_Groupbuy</module>
+ 
+                     </setup>
+ 
+                     <connection>
+ 
+                         <use>core_setup</use>
+ 
+                     </connection>
+ 
+                 </groupbuy_setup>
+ 
+                 <groupbuy_write>
+ 
+                     <connection>
+
+                         <use>core_write</use>
+
+                     </connection>
+
+      
+
+      
+
+                 </groupbuy_write>
+
+                 <groupbuy_read>
+
+                     <connection>
+
+                         <use>core_read</use>
+
+                     </connection>
+
+                 </groupbuy_read>
+
+             </resources>
+
+             <blocks>
+
+                 <groupbuy>
+
+                     <class>Ayopa_Groupbuy_Block</class>
+
+                 </groupbuy>
+
+             </blocks>
+
+             <helpers>
+
+                 <groupbuy>
+
+                     <class>Ayopa_Groupbuy_Helper</class>
+
+                 </groupbuy>
+
+             </helpers>
+
+         </global>
+
+     </config>

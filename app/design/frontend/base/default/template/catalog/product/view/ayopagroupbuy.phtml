@@ -1,0 +1,155 @@
+<?php
+
+?>
+
+<?php $_product = $this->getProduct();?>
+
+<?php  //make Ayopa API calls
+	$curl_handle=curl_init();
+	curl_setopt($curl_handle,CURLOPT_URL,'http://beta.ayopasoft.com/AyopaServer/check-login?username='. Mage::getStoreConfig("ayopa/ayopamodule/login") . '&password='. sha1(Mage::helper('core')->decrypt(Mage::getStoreConfig("ayopa/ayopamodule/password"))));
+	curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,2);
+	curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+	$login = curl_exec($curl_handle);
+	curl_close($curl_handle);
+
+
+	$obj = json_decode($login,true);
+	$curl_handle=curl_init();
+	curl_setopt($curl_handle,CURLOPT_URL,'http://beta.ayopasoft.com/AyopaServer/get-auction-for-product?merchantID='. $obj["merchant_id"] . '&productID=' . $_product->getId());
+	curl_setopt($curl_handle,CURLOPT_CONNECTTIMEOUT,4);
+	curl_setopt($curl_handle,CURLOPT_RETURNTRANSFER,1);
+	$auction = curl_exec($curl_handle);
+	curl_close($curl_handle);
+    
+	$obj = json_decode($auction, true);
+	$auction_id = $obj["auction"]["auction_id"];
+	
+	$_options = $_product->getOptions();
+	$found = false;
+	
+	if (count($_options)) {
+		foreach ($_options as $_option){
+			if ($_option->getTitle() == 'GroupBuyNSave')
+			{
+				$found = true;
+				
+				if (!$auction){
+					$_option->delete();
+					if (count($_options) == 1)
+					{
+						$_product->setHasOptions(0)->save();
+					}
+					
+					$_product->save();
+				}
+			}
+		}
+	}
+	
+	if (!$found && $auction){
+		try {
+			$options = 	array(
+						'type'		=> 'field',
+						'is_require'	=> 0,
+						'price'		=> 0,
+						'price_type'	=> 'fixed'
+					  );
+			
+			$helper = Mage::helper('ayopamodule')->setCustomOption($_product->getID(), 'GroupBuyNSave', $options, $values);
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+?>
+
+<?php $_options = $_product->getOptions(); ?>
+
+<?php $ayopaOpt = 0; ?>
+
+<?php if (count($_options)):?>
+	<?php foreach($_options as $_option): ?>
+    	<?php if($_option->getTitle() == "GroupBuyNSave"): ?>
+			<?php $ayopaOpt = $_option->getId(); ?>
+			<?php if (!$auction): ?>
+				<?php	//$_option->delete(); ?>
+				<?php	//$_product->save(); ?>
+			<?php endif; ?>
+        <?php endif;?>
+	<?php endforeach; ?>
+<?php endif; ?>
+
+<?php if ($ayopaOpt != 0): ?>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ayopa-resources.s3.amazonaws.com/js/jquery.qtip-1.0.0-rc3.min.js"></script>	
+	<script>
+
+		$j = jQuery.noConflict();
+		$j(document).ready(function(){		
+				$j("#options_<?php echo $ayopaOpt; ?>_text").hide();
+		});				
+	</script>
+<?php endif; ?>
+
+<?php if($auction && $ayopaOpt != 0 ): ?>
+
+
+<script>
+
+$j(document).ready(function(){
+				
+					active_json = <?php echo $auction; ?>;
+					if (typeof(active_json.auction) != 'undefined' && active_json != 0 && active_json != null)
+					{		
+							
+				
+							$j("#ayopa-buttons").html('<input type="image" id="ayopa_btn" src="https://ayopa-resources.s3.amazonaws.com/images/buy_and_save.png" value="Buy with Ayopa" onClick="bwa();" /><img src="http://ayopa-resources.s3.amazonaws.com/images/question.png" id="ayopa_about">');
+							
+							$j('#ayopa_about').qtip({
+							   		content: $j('<iframe src="http://ayopa-resources.s3.amazonaws.com/plugins/hover.html" frameborder="0" width="750px" height="400px" scrolling="no"></iframe>'),
+							   		show: { when: {event: 'click'} },
+							   		hide: 'unfocus',
+							   		style: { tip: true, name: 'light', width: {min:'700', max: '760'}, height: {min:'700', max:'700'}},
+									position: {
+							  				corner: {
+							     			target: 'leftMiddle',
+							     			tooltip: 'rightMiddle'}
+									}
+
+							});
+							
+							$j('#ayopa_btn').qtip({
+							   		content: $j('<iframe src="http://beta.ayopasoft.com/AyopaServer/display-auction-button?auctionID=<?php echo $auction_id; ?>" frameborder="0" width="250px" height="120px" scrolling="no"></iframe>'),
+							   		show: { when: 'mouseover' },
+							   		hide: 'unfocus',
+							   		style: { tip: true, name: 'light', width: {min:'300', max: '300'} },
+									position: {
+							  				corner: {
+							     			target: 'leftMiddle',
+							     			tooltip: 'rightMiddle'}
+									}
+
+							});
+							
+					
+					}
+			
+});
+</script>
+
+<script>
+   function bwa()
+   {
+	     
+		$j("#options_<?php echo $ayopaOpt; ?>_text").val(active_json.auction.auction_id);
+		document.forms[1].submit();
+   }
+
+</script>
+
+
+<div id="ayopa-buttons" style="margin-top:30px;"></div>
+	
+
+<div id="ayopa"></div>
+
+<?php endif; ?>

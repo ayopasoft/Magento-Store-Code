@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Ayopa_Login>
+            <active>false</active>
+            <codePool>local</codePool>
+        </Ayopa_Login>
+    </modules>
+</config>
