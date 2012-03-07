@@ -1,0 +1,242 @@
+<html>
+<head>
+	<link href="widget.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/common/widgetbasics.js"></script>
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/common/dombuilder.js"></script>
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/common/events-api.js"></script>
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/mm_widget/widget_mm.js"></script>
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/common/bubble.js"></script>
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/common/printcontrol.js"></script>
+	<script type="text/javascript" src="http://www.kalendi.com/new_widgets/common/SearchAttribute.js"></script>
+	<script language="Javascript">
+	function get_up_events703(){
+		cals = ["C/KraZkustoms/Kari Zimmerman/Events,C/KraZkustoms/Kari Zimmerman/Car Shows"]
+		// Create an instance of the month widget
+	    var y = new CalibrateMonthWidget ("schedule_up703",     // ID of div to hold month
+	                                      "details_up703"      // ID of div to hold details
+	                                     );                           
+	    y.setTimeColumnP (false); // call with true to get two column display
+	    y.setDetails("plusminus") // bubble, plusminus, or null
+	    y.showDescription = true // if not set description will not show (but will show on bubble or plusminus)
+	    y.showAlldayIcon = true // if not set all day icon will not be shown
+	    y.showRecurringIcon = true // if not set recurring icon will not be shown
+	    y.emptyString = "No events during this time"
+	    y.showCaption = true // If set to true, the caption will override showing of the description
+	    y.mode = "week" // startup mode
+	    y.getEventsFromCalibrate (null, // username
+	                              null, // password
+	                              null, // timezone
+	                              cals);
+	    // These are all additional 
+	    new PrintControl("printc_up703",y)
+	}
+	function addLoadEvent(func)
+	{	
+		var oldonload = window.onload;
+		if (typeof window.onload != 'function')
+		{
+	    	window.onload = func;
+		} 
+		else 
+		{
+			window.onload = function(){oldonload();func();}
+		}
+	}
+	addLoadEvent(get_up_events703);
+	</script>
+<style>
+	#widget703 * {
+	background:transparent none repeat scroll 0 50%;
+	border:0 none transparent;
+	border-collapse:collapse;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	margin:0;
+	padding:0;
+	}
+	#widget703 {
+	margin:0 0 1em;
+	}
+	#widget703 input {
+	border:1px solid #ffffff;
+	}
+	#widget703 .cal_event_heading {
+	background-color:#000000;
+	color:#ffffff;
+	font-size:10pt;
+	font-weight:bold;
+	text-align:center;
+	text-transform:capitalize;
+	}
+	#widget703 #schedule_up703 {
+	margin:0 0 1em;
+	display:none;
+	}
+	#widget703 #searchAndLogo {
+	margin:0px;
+	}
+	#widget703 #widget703 .logo {
+	margin:0 0 0 2em;
+	}
+	#widget703 .cal_event_heading a:link {
+	color:#ffffff;
+	text-decoration:none;
+	}
+	#widget703 .cal_event_heading a:visited {
+	color:#ffffff;
+	text-decoration:none;
+	}
+	#widget703 .cal_event_heading a:hover {
+	color:#ffffff;
+	text-decoration:none;
+	}
+	#widget703 td {
+	padding:1px;
+	}
+	#widget703 .cal_day_heading {
+	background-color:#000000;
+	color:#ffffff;
+	font-size:1.2em;
+	font-weight:bold;
+	padding:0.25em 1em 0.25em 0.5em;
+	text-align:left;
+	text-transform:capitalize;
+	}
+	#widget703 .cal_day_selected {
+	}
+	#widget703 .cal_day_normal {
+	font-size:8pt;
+	}
+	#widget703 .cal_row_even, #widget703 .cal_row_odd {
+	padding:5px;
+	}
+	#widget703 .cal_row_even {
+	background-color:#999999;
+	}
+	#widget703 .cal_table{
+		width:100%
+	}
+	#widget703 .cal_row_odd {
+	background-color:#ffffff;
+	border:1px solid #999999;
+	}
+	#widget703 .cal_row_content {
+	color:#000000;
+	font-size:8pt;
+	}
+	#widget703 .cal_row_even a:link {
+	background-color:transparent;
+	color:000000;
+	font-size:8pt;
+	text-decoration:underline;
+	}
+	#widget703 .cal_row_even a:visited {
+	background-color:transparent;
+	color:000000;
+	font-size:8pt;
+	text-decoration:underline;
+	}
+	#widget703 .cal_row_even a:hover {
+	background-color:transparent;
+	color:#000000;
+	font-size:8pt;
+	text-decoration:underline;
+	}
+	#widget703 .cal_row_odd a:link {
+	background-color:transparent;
+	color:000000;
+	font-size:8pt;
+	text-decoration:underline;
+	}
+	#widget703 .cal_row_odd a:visited {
+	background-color:transparent;
+	color:000000;
+	font-size:8pt;
+	text-decoration:underline;
+	}
+	#widget703 .cal_row_odd a:hover {
+	background-color:transparent;
+	color:#000000;
+	font-size:8pt;
+	text-decoration:underline;
+	}
+	#widget703 .cal_credit, #widget703 .cal_credit a:link, #widget703 .cal_credit a:visited, #widget703 .cal_credit a:hover {
+	font-size:9px;
+	}
+	#widget703 .mark, #widget703 .mark .cal_row_content {
+	background-color:#333333;
+	color:#ffffff;
+	}
+	#widget703 .calnodata {
+	font-size:14px;
+	font-style:normal;
+	}
+	#widget703 .caldayhasevents {
+	text-decoration:underline;
+	}
+
+	/*styles for directions popup*/
+	.helpOuter {
+		margin-left:5px;
+	}
+
+	.helpIcon {
+		background: url(help.gif) no-repeat; 
+		width:14px;
+		height:12px;
+	}
+	.directions_main {
+		background: #ffffff none repeat scroll 0%;
+		border:#999999 2px solid;
+	}
+
+	.directions_bold_text {
+		color: #000000;font-size:13px;font-weight:bold;
+	}
+
+	.directions_close {
+		padding-top:0px; padding-right:0px;
+	}
+	.directions_close_Icon { 
+		background:url(http://www.kalendi.com/calibrate/images/close.gif) no-repeat top;	
+		height:26px;width:27px
+	}
+
+	.tooltip {
+		background-color:#ffffff;
+		border:1px solid #999999;
+	}
+
+	.tooltip_close {
+		background:url(tooltip_close.gif) no-repeat top;	
+		height:14px;width:13px
+	}
+
+	.tooltip_text {
+		font-family:Verdana,Arial,Helvetica,sans-serif;
+		font-size:12px;
+	}
+</style>
+</head>
+<body>
+	<div id="widget703" style="padding-top:15px; width:390px;  margin-right:auto; margin-left:auto">
+		<div style="width:180px; ">
+			<div id="schedule_up703" style="width:180px; margin-bottom:0px;"></div>
+		</div>
+		<div style="width:380px;">
+			<div id="searchAndLogo" style="font-size:12px; width:100%; text-align:right">
+				<span onMouseOver="this.style.cursor=hand" onclick="window.open('http://kalendi.com/kalendi/viewcals.do/KraZkustoms/195')">
+					Calendar
+				</span>
+				 | 
+				<span id="printc_up703" style="" onMouseOver="this.style.cursor=hand" imgfile="">
+					Print
+				</span>
+			</div>
+		</div>
+		<div id="details_up703" style="width:380px">Downloading calendar events from <a href="http://www.kalendi.com">Kalendi
+			 Business</a>&#8230;
+		</div> 
+	</div>
+	
+</body>
+</html>
